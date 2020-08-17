@@ -1,0 +1,55 @@
+<div class="collapse navbar-collapse order-2 {{ collapseOrder }}" id="navbarSupportedContent">
+    <ul class="navbar-nav {{ section.settings.menu_position }}">
+      {% for link in linklists[section.settings.menu].links %}
+        {% if link.links == blank %}
+        <li class="nav-item {% if link.active %}active{% endif %}">
+            <a class="nav-link" href="{{ link.url }}" aria-current="{% if link.active %}page{% endif %}">{{ link.title }}</a>
+        </li>
+          {% else %}
+        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">{{ link.title }}</a>
+            <ul class="dropdown-menu one" role="menu">
+
+             {% for childlink in link.links %}
+             {% if childlink.title contains "[divider]" %}
+                  <div class="dropdown-divider"></div>
+             {% else %}
+             {% if childlink.links == blank %}
+              <li class="dropdown-item" tabindex="-1">
+                <a href="{{ childlink.url }}"> {{ childlink.title }}</a>
+              </li>
+              {% else %}
+              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">{{ childlink.title }}</a>
+                <div class="dropdown-menu two" role="menu">
+                {% for grandchildlink in childlink.links %}
+                    <a class="dropdown-item" tabindex="-1" href="{{ childlink.url }}"> {{ grandchildlink.title }}</a>
+                {% endfor %}
+                </div>
+               </li>
+              {% endif %}
+              {% endif %}
+              {% endfor %}
+            </ul>
+
+      </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+  </div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+<script>
+$('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
+  if (!$(this).next().hasClass('show')) {
+    $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+  }
+  var $subMenu = $(this).next(".dropdown-menu");
+  $subMenu.toggleClass('show');
+
+
+  $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+    $('.dropdown-submenu .show').removeClass("show");
+  });
+
+
+  return false;
+});
+</script>
