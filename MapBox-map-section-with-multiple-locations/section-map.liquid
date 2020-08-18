@@ -1,0 +1,94 @@
+{% if section.settings.enable_map %}
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
+<style>
+#map { display: block; height: 600px; width: 100%; margin-bottom: 35px; }.marker {display: block;border: none;border-radius: 50%;cursor: pointer;padding: 0;}
+</style>
+
+<div id="map"></div>
+
+<script>
+  mapboxgl.accessToken = '{{section.settings.api_token}}';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/light-v10',
+    center: [{% for block in section.blocks %}{%- if forloop.first -%}{{block.settings.latitude}}, {{block.settings.longitude}}{%- endif -%}{% endfor %}],
+    zoom: 5
+  });
+  
+  var geojson = {
+    'type': 'FeatureCollection',
+    'features': [ {% for block in section.blocks %} { 'type': 'Feature', 'properties': { 'message': '{{block.settings.address}}', 'logo': '{{block.settings.logo | img_url}}' }, 'geometry': { 'type': 'Point', 'coordinates': [{{block.settings.latitude}}, {{block.settings.longitude}}] } } {%- if forloop.last -%}{%- else -%},{%- endif -%}{% endfor %} ]
+  };
+
+  // add markers to map
+  geojson.features.forEach(function(marker) {
+    // create a DOM element for the marker
+    var el = document.createElement('div');
+    el.className = 'marker';
+    el.style.backgroundImage = 'url(' + marker.properties.logo + ')';
+    el.style.width = '50px';
+    el.style.height = '50px';
+    var popup = new mapboxgl.Popup({ offset: 25 }).setText(marker.properties.message);
+    // add marker to map
+    new mapboxgl.Marker(el).setLngLat(marker.geometry.coordinates).setPopup(popup).addTo(map);
+  });
+</script>
+{% endif %}
+{% schema %}
+{
+  "name": "Section Map",
+  "class": "js-section__home-map",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_map",
+      "label": "Show Map"
+    },
+    {
+      "type": "textarea",
+      "id": "api_token",
+      "label": "API Token",
+      "default": "pk.eyJ1IjoiYWFsaXlhbmd1bCIsImEiOiJjazdnbmx0eHMwMWlxM2RwYWkwbWtyeWJ1In0.qgdiZd2Pr7wFbQeYxoUZ1Q"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Location",
+      "settings": [
+       {
+         "type": "image_picker",
+         "id": "logo",
+         "label": "Logo"
+       },
+       {
+         "type": "text",
+         "id": "latitude",
+         "label": "Coordinates Latitude",
+         "default": "-105.0705024"
+       },
+       {
+         "type": "text",
+         "id": "longitude",
+         "label": "Coordinates Longitude",
+         "default": "39.9801825"
+       },
+       {
+         "type": "textarea",
+         "id": "address",
+         "label": "Address",
+         "default": "1380 Horizon Ave"
+       }
+      ]
+    }
+  ],
+  "presets": [
+    {
+     "name": "Section Map",
+     "category": "Text"
+    }
+  ]
+}
+{% endschema %}
