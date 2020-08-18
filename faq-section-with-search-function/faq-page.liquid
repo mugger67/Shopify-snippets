@@ -1,0 +1,418 @@
+<!-- &#xF002;      -->
+
+<div class="container" id="page_container">
+  <div id="accordion_search_bar_container faq-search-field">
+      <input type="search" id="faq_search" placeholder="Search" style="font-family:Serenity, FontAwesome" />
+  </div>
+  <div class="panel-group row" id="main_accordion">
+    <div class="rte rte--indented-images">
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+<div id="shopify-section-sidebar-section" class="shopify-section col-12 col-xl-3 col-sidebar">
+  {%- capture filter -%}{%- for block in section.blocks -%}{{-block.settings.filter-}}{%- if forloop.last -%}{%- else -%},{%- endif -%}{%- endfor -%}{%- endcapture -%}{%- assign areas = filter | split: ',' | uniq -%}
+  <ul class="category-list column column--sm-6" id="category-list">
+    <li class="category-list-item">
+      <a class="category-list-item__link" href="#" data-id="all-questions">
+        <h2 class="h5 category-list-item__title" role="presentation">All Questions</h2>
+      </a>
+    </li>{% for area in areas %}
+    <li class="category-list-item">
+      <a class="category-list-item__link" href="#" data-id="{{area | handle}}">
+        <h2 class="h5 category-list-item__title" role="presentation">{{area}}</h2>
+      </a>
+    </li>{% endfor %}
+  </ul>
+</div>
+<div id="shopify-section-faqs-section" class="shopify-section col-12 col-xl-9">
+  <section id="faqs_page">
+    {% if section.settings.des_faqs != blank %}
+    <div class="des_faqs">
+      {% render 'multilang' with section.settings.des_faqs %}
+    </div>
+    {% endif %}
+
+    <div class="panel-group">
+      <h2 class="panel-title pageTitile">FAQS</h2>
+      {% for block in section.blocks %}
+      <div class="panel panel-default all-questions {{ block.settings.filter | handle}}">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a class="{% unless forloop.first %}collapsed{% endunless %}" data-toggle="collapse" href="#faqs-{{block.id}}" >
+              {% if settings.enable_multilang %}
+              <span class="lang1" data-title="{{section.settings.icon_faqs | split: '|' | first }}" data-show="{{ section.settings.icon_show | split: '|' | first }}" data-hide="{{ section.settings.icon_hide | split: '|' | first }}">
+                {{ block.settings.question_faqs | split: '|' | first | strip }}
+              </span>
+              <span class="lang2" data-title="{{section.settings.icon_faqs | split: '|' | last }}" data-show="{{ section.settings.icon_show | split: '|' | last }}" data-hide="{{ section.settings.icon_hide | split: '|' | last }}">
+                {{ block.settings.question_faqs | split: '|' | last | strip }}
+              </span>
+              {% else %}
+              <span data-title="{{section.settings.icon_faqs | split: '|' | first }}" data-show="{{ section.settings.icon_show | split: '|' | first }}" data-hide="{{ section.settings.icon_hide | split: '|' | first }}">
+                {{ block.settings.question_faqs | split: '|' | first }}
+              </span>
+              {% endif %}
+            </a>
+          </h4>    
+        </div>
+        <div id="faqs-{{block.id}}" class="panel-collapse collapse{% if forloop.first %} show{% endif %}">
+          <div class="panel-body">
+            {% if settings.enable_multilang %}
+            <div class="lang1" data-title="{{section.settings.icon_answer | split: '|' | first }}">
+              <div class="rte">
+                {{ block.settings.answer_faqs | split: '|' | first }}
+              </div>
+            </div>
+            <div class="lang2" data-title="{{section.settings.icon_answer | split: '|' | last }}">
+              <div class="rte">
+                {{ block.settings.answer_faqs | split: '|' | last }}
+              </div>
+            </div>
+            {% else %}
+            <div data-title="{{section.settings.icon_answer | split: '|' | first }}">
+              <div class="rte">
+                {{ block.settings.answer_faqs | split: '|' | first }}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.contact_text != blank or section.settings.contact_link_text != blank %}
+    <div class="contact-link">
+      {% if section.settings.contact_text != blank %}
+      <span class="text">
+        {% render 'multilang' with section.settings.contact_text  %}
+      </span>
+      {% endif %}
+      {% if section.settings.contact_link_text != blank %}
+      <a href="{{ section.settings.contact_link }}" class="btn">
+        {% render 'multilang' with section.settings.contact_link_text  %}
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+
+  </section>
+</div>
+<style>
+  .faqs-page .panel-title {
+  	font-size: {{ section.settings.font_size_qs }}px;
+    border-bottom: 1px solid #000;
+  }
+  
+  .faqs-page .panel-title > a {
+    color: {{ section.settings.color_question }};
+    background-color: {{ section.settings.bg_question }};
+  }
+  
+  .faqs-page .panel-title > a span:before {
+    /*content: attr(data-title) "";*/
+    background-color: {{ section.settings.bg_icon_qs }};
+    color: {{ section.settings.color_icon_qs }};
+  }  
+  
+  .faqs-page .panel-title > a:not(.collapsed) {
+  	/*background-color: {{ section.settings.bg_question_acitve }};
+    color: {{ section.settings.color_question_acitve }};*/
+  }
+  
+  .faqs-page .panel-group .panel-body {
+  	font-size: {{ section.settings.font_size_answer }}px;
+    color: {{ section.settings.color_question_answer }};
+  }
+  
+  .faqs-page .panel-group .panel-body > div:before {
+  	/*content: attr(data-title) "";*/
+    background-color: {{ section.settings.bg_icon_answer }};
+    color: {{ section.settings.color_icon_answer }};
+    border-color: {{ section.settings.color_icon_answer }};
+  }
+  
+  .faqs-page .des_faqs a,
+  .faqs-page.panel-group .panel-body a {
+    color: {{ section.settings.color_question_link }};
+  }
+</style>
+<script>
+  $(document).ready(function() {
+    $(document).on("click","#category-list li a",function() {
+      event.preventDefault();
+      var faqsubject = $(this).data('id');
+      $('#faqs_page .panel-default').hide();
+      $('.'+faqsubject).show();
+    });
+  });
+
+  (function(){
+    $( '#accordion_search_bar' ).unbind( 'change keyup paste click' );
+
+    $('div[data-parent="#accordion"]').each(function(){
+      $(this).attr('data-parent', '#main_accordion');
+    });
+
+    var searchTerm, panelContainerId;
+    // Create a new contains that is case insensitive
+    $.expr[':'].containsCaseInsensitive = function (n, i, m) {
+      return jQuery(n).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+    };
+    $('#accordion_search_bar').on('change keyup paste click', function () {
+      searchTerm = $(this).val();
+      if (searchTerm.length <= 0)
+      {
+        if ($('#page_container_search').length)
+          $('#page_container_search').hide();
+        $('#page_container').show();
+        return;
+      }
+      $('#page_container').hide();
+      if ($('#page_container_search').length <= 0)
+      {
+        $('#page_container').after('<div class="container" id="page_container_search"></div>');
+      }
+      $('#page_container_search').html('<div class="row" id="page_container_search_accordion"></div>');
+      $('#page_container_search').show();
+      var searchResultCount = 0;
+      $('#accordion > .panel').each(function () {
+        panelContainerId = '#' + $(this).attr('id');
+        if (/^#collapse_container_.*/.test(panelContainerId)) {
+          return;
+        }
+        if ($(panelContainerId + ':containsCaseInsensitive(' + searchTerm + ')').length <= 0) return;
+        var searchItem = $(panelContainerId + ':containsCaseInsensitive(' + searchTerm + ')').parent().clone();
+        $(searchItem).find('.panel').attr('id', 'search_result_' + searchResultCount + '_container');
+        var oldId = $(searchItem).find('.panel > .panel-heading').attr('href');
+        $(searchItem).find(oldId).attr('id', 'search_result_' + searchResultCount);
+        $(searchItem).find('.panel > .panel-heading').attr('href', '#' + 'search_result_' + searchResultCount++);
+        $(searchItem).find('.panel > .panel-heading').attr('data-parent', '#page_container_search_accordion');
+        searchItem.appendTo( "#page_container_search > .row" );
+      });
+      var $myGroup = $('#page_container_search_accordion');
+      $myGroup.on('show.bs.collapse','.collapse', function() {
+        $myGroup.find('.collapse.in').collapse('hide');
+      });
+    });
+    var $mainAccordian = $('#main_accordion');
+    $mainAccordian.on('show.bs.collapse','.collapse', function() {
+      $mainAccordian.find('.collapse.in').collapse('hide');
+    });
+  }());
+
+  $(document).ready(function(){
+    $(".down1").click(function(){ $(".see-all1").slideDown(); });
+  });
+  $(document).ready(function(){
+    $(".down2").click(function(){ $(".see-all2").slideDown(); });
+  });
+  $(document).ready(function(){
+    $(".down3").click(function(){ $(".see-all3").slideDown(); });
+  });
+  $(document).ready(function(){
+    $(".down4").click(function(){ $(".see-all4").slideDown(); });
+  });
+  $(document).ready(function(){
+    $(".down5").click(function(){ $(".see-all5").slideDown(); });
+  });
+  $(document).ready(function(){
+    $(".down6").click(function(){ $(".see-all6").slideDown(); });
+  });
+  $(document).ready(function(){
+    $(".down7").click(function(){ $(".see-all7").slideDown(); });
+  });
+  $(document).ready(function(){
+    $(".down8").click(function(){ $(".see-all8").slideDown(); });
+  });
+  $(document).ready(function(){
+    $(".down9").click(function(){ $(".see-all9").slideDown(); });
+  });
+  $(document).ready(function(){
+    $(".down10").click(function(){ $(".see-all10").slideDown(); });
+  });
+  $(document).ready(function(){
+    $(".down11").click(function(){ $(".see-all11").slideDown(); });
+  });
+  $(document).ready(function(){
+    $(".down13").click(function(){ $(".see-all13").slideDown(); });
+  });
+  $(document).ready(function(){
+    $(".down12").click(function(){ $(".see-all12").slideDown(); });
+  });
+</script>
+
+<style>
+  .down1,.down2,.down3,.down4,.down5,.down6,.down7,.down8,.down9,.down10,.down13,.down11,.down12 {
+    color: blue;
+    margin-left: 15px;
+    cursor: pointer;
+  }
+</style>
+{% schema %}
+  {
+    "name": "FAQS Page",
+    "class": "row container",
+    "settings": [
+      {
+       "type": "textarea",
+       "id" : "des_faqs",
+       "label" : "Description"
+      },
+	  {
+        "type" : "header",
+        "content" : "Contact"
+      },
+	  {
+       "type" : "textarea",
+       "id" : "contact_text",
+       "label" : "Contact Text",
+       "default" : "Unable to find satisfactory answers ?"
+      },
+	  {
+       "type" : "textarea",
+       "id" : "contact_link_text",
+       "label" : "Contact Link Text",
+       "default" : "Contact Support"
+      },
+	  {
+        "type" : "url",
+        "id" : "contact_link",
+        "label" : "Contact link"
+      },
+
+      {
+        "type": "header",
+        "content": "Question"
+      },
+      {
+       "type" : "text",
+       "id" : "icon_faqs",
+       "label" : "Icon Faqs",
+       "default" : "Q"
+      },
+      {
+       "type" : "color",
+       "id" : "bg_icon_qs",
+       "label" : "Background Icon",
+       "default" : "#000"
+      },
+      {
+       "type" : "color",
+       "id" : "color_icon_qs",
+       "label" : "Icon Color",
+       "default" : "#fff"
+      },
+      {
+       "type" : "color",
+       "id" : "bg_question",
+       "label" : "Background Question",
+       "default" : "#f5f5f5"
+      },
+      {
+       "type" : "color",
+       "id" : "color_question",
+       "label" : "Color Question",
+       "default" : "#000"
+      },
+	  {
+       "type" : "text",
+       "id" : "font_size_qs",
+       "label" : "Font size Question",
+       "default" : "13"
+      },
+      {
+       "type" : "color",
+       "id" : "bg_question_acitve",
+       "label" : "Background Icons Question Active",
+       "default" : "#FF8B21"
+      },
+      {
+       "type" : "color",
+       "id" : "color_question_acitve",
+       "label" : "Color Question Active",
+       "default" : "#fff"
+      },
+
+      {
+        "type": "header",
+        "content": "Answer"
+      },
+      {
+       "type" : "text",
+       "id" : "icon_answer",
+       "label" : "Icon Answer",
+       "default" : "A"
+      },
+      {
+       "type" : "color",
+       "id" : "bg_icon_answer",
+       "label" : "Background Icon Answer",
+       "default" : "#fff"
+      },
+      {
+       "type" : "color",
+       "id" : "color_icon_answer",
+       "label" : "Icon Color",
+       "default" : "#FF8B21"
+      },      
+      {
+       "type" : "color",
+       "id" : "color_question_answer",
+       "label" : "Color Answer",
+       "default" : "#000"
+      },
+	  {
+       "type" : "text",
+       "id" : "font_size_answer",
+       "label" : "Font size Answer",
+       "default" : "12"
+      },
+      {
+       "type" : "color",
+       "id" : "color_question_link",
+       "label" : "Color Link",
+       "default" : "#FF8B21"
+      },
+      {
+        "type": "header",
+        "content": "Show / Hide"
+      },
+      {
+       "type" : "text",
+       "id" : "icon_show",
+       "label" : "Icon Show",
+       "default" : "Show"
+      },
+      {
+       "type" : "text",
+       "id" : "icon_hide",
+       "label" : "Icon Hide",
+       "default" : "Hide"
+      }
+ 	],
+    "blocks": [
+      {
+        "type" : "text",
+		"name" : "Question",
+        "settings":[
+          {
+            "type" : "text",
+            "id" : "filter",
+            "label" : "Subject"
+          },
+          {
+            "type" : "textarea",
+            "id" : "question_faqs",
+            "label" : "Question"
+          },
+          {
+            "type" : "textarea",
+            "id" : "answer_faqs",
+            "label" : "Answer"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
