@@ -1,0 +1,644 @@
+<div class="main-wizard-codehouse">
+  <div class="header-logo">
+    <a href="/"><img src="{{'the-bra-lab.png' | asset_url}}" alt="The Bra Lab"></a>
+    <span class="right-menu"><span class="red-color">Free</span> <a href="/pages/shipping-returns">Exchanges & Returns!</a> <a href="#cart" class="icon-cart cart-button"><span>{{cart.item_count}}</span></a></span>
+  </div>
+  <form method="post" action="/cart/add" accept-charset="UTF-8" class="main-wizard-form" enctype="multipart/form-data">
+  <div class="content-section">
+    <input type="hidden" name="form_type" value="product">
+    <input type="hidden" name="utf8" value="✓">
+    <!-- Newsletter popup -->
+    <section class="section question" id="section-newsletter" style="display: none;">
+       <div class="newsletter-container">
+         <span class="newsletter-close">X</span>
+         <p class="overlay-section">Get the list for new size releases.</p>
+         <div class="newsletter">
+           <p class="message"></p>
+           {% if section.settings.enable_klaviyo %}
+           <form action="https://manage.kmail-lists.com/subscriptions/subscribe?a=LrAMeY&g=QLGgJB" id="email_signup" method="post" name="mc-embedded-subscribe-form" class="contact-form" target="_blank">
+             {% comment %}
+             <input type="text" value="" name="FNAME" placeholder="{{ 'general.newsletter_form.subscriber_first_name' | t }}">
+             <input type="text" value="" name="LNAME" placeholder="{{ 'general.newsletter_form.subscriber_last_name' | t }}">
+             {% endcomment %}
+             <input type="email" value="" name="EMAIL" class="transparent-field" placeholder="email address">
+             <button type='submit' name="subscribe" class="btn newsletter-button">{{ 'general.newsletter_form.submit' | t }}</button>
+           </form>
+           {% else %}
+           {% form 'customer' %}
+           {% if form.posted_successfully? %}
+           <p><em>{{ 'general.newsletter_form.success_text' | t }}</em></p>{% elsif form.errors %}{% for field in form.errors %}
+           <p><em>{{ field }} - {{ form.errors.messages[field] }}</em></p>{% endfor %}{% endif %}
+           <input type="hidden" name="contact[tags]" value="prospect,newsletter"/>
+           <input type="hidden" name="contact[first_name]" value="{{ 'general.newsletter_form.subscriber_first_name' | t }}" />
+           <input type="hidden" name="contact[last_name]" value="{{ 'general.newsletter_form.subscriber_last_name' | t }}" />
+           <input type="email" class="transparent-field" id="email" name="contact[email]" required pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}" placeholder="email address" />
+           <button type='submit' class="btn newsletter-button">{{ 'general.newsletter_form.submit' | t }}</button>
+           {% endform %}
+           {% endif %}
+         </div>
+         <script type="text/javascript" src="//www.klaviyo.com/media/js/public/klaviyo_subscribe.js"></script>
+         <script type="text/javascript"> KlaviyoSubscribe.attachToForms('#email_signup', { hide_form_on_success: true }); </script>
+      </div>
+    </section>
+    <section class="section question activate" id="section-get-started">
+    <!-- Section Get Started -->
+     <div class="container-set">
+      <div class="content-center-none">
+        <div class="section-space"></div>
+        <span class="section-title">Build your</span>
+        <p class="main-title">
+          <span class="pink">p</span>
+          <span class="blue">e</span>
+          <span class="green">r</span>
+          <span class="red">f</span>
+          <span class="pink">e</span>
+          <span class="blue">c</span>
+          <span class="green">t</span>
+        </p>
+        <p class="main-title bottomm">
+          <span class="red">b</span>
+          <span class="blue">r</span>
+          <span class="green">a</span>
+          <span class="pink">.</span>
+        </p>
+        <a href="#" class="btn button next-section" id="setp-0">Get Started</a>
+      </div>
+      <div class="fields-set flex">
+        <div class="four columns alpha">
+          <img src="{{'icon-001.png' | asset_url}}" alt="Conserving water" class="icon-set">
+          <p class="content-space">Conserving water<br>and zero toxic products</p>
+        </div>
+        <div class="four columns">
+          <img src="{{'icon-002.png' | asset_url}}" alt="Generating more renewable" class="icon-set">
+          <p class="content-space">Generating more renewable<br>energy than we consume</p>
+        </div>
+        <div class="four columns">
+          <img src="{{'icon-003.png' | asset_url}}" alt="Interchangeable backs and straps" class="icon-set">
+          <p class="content-space">Interchangeable backs and straps<br>gives you more looks for less</p>
+        </div>
+        <div class="four columns omega">
+          <img src="{{'icon-004.png' | asset_url}}" alt="Extra loops" class="icon-set">
+          <p class="content-space">Extra loops gives you options to<br>show or hide with any neckline</p>
+        </div>
+      </div>
+     </div>
+    </section>
+    <section class="section question" id="section-1" style="display: none;">
+    <!-- Section 1 -->
+     <div class="container-set">
+      <div class="content-center">
+        <span class="second-title">Step 1</span>
+        <span class="section-title">Tell us your size.</span>
+        <p class="bold">Enough about me, Let's talk about you.</p>
+        
+      </div>
+      <div class="fields-set flex">
+        <div class="eight columns alpha">
+          <p class="content-space inline-block">
+            <label for="bra-size" class="size-label">My Band Size Is</label>
+            <select id="bra-size" size="number" class="bra-size-selector">
+              <option value="24">24</option>
+              <option value="26">26</option>
+              <option value="28">28</option>
+              <option value="30">30</option>
+              <option value="32">32</option>
+              <option value="34">34</option>
+              <option value="36">36</option>
+              <option value="38">38</option>
+              <option value="40">40</option>
+              <option value="42">42</option>
+              <option value="44">44</option>
+            </select>
+          </p>
+        </div>
+        <div class="eight columns omega">
+          <p class="content-space inline-block">
+       		<label for="cup-size" class="size-label">My Cup Size Is</label>
+            <select id="cup-size" class="bra-size-selector">
+              <option data-group="Show" value="0">Select</option>
+              <option data-group="32" value="AA SMALL" data-cupsize="AA" data-backssize="Small">A</option>
+              <option data-group="34" value="AA MEDIUM" data-cupsize="AA" data-backssize="Medium">A</option>
+              <option data-group="36" value="A LARGE" data-cupsize="A" data-backssize="Large">A</option>
+              <option data-group="38" value="B LARGE" data-cupsize="B" data-backssize="Large">A</option>
+              <option data-group="40" value="C XLARGE" data-cupsize="C" data-backssize="XLarge">A</option>
+              <option data-group="42" value="D XLARGE" data-cupsize="D" data-backssize="XLarge">A</option>
+              <option data-group="44" value="DD XLARGE" data-cupsize="DD" data-backssize="XLarge">A</option>
+              <option data-group="36" value="AA LARGE" data-cupsize="AA" data-backssize="Large">AA</option>
+              <option data-group="38" value="A LARGE" data-cupsize="A" data-backssize="Large">AA</option>
+              <option data-group="40" value="B XLARGE" data-cupsize="B" data-backssize="XLarge">AA</option>
+              <option data-group="42" value="C XLARGE" data-cupsize="C" data-backssize="XLarge">AA</option>
+              <option data-group="44" value="D XLARGE" data-cupsize="D" data-backssize="XLarge">AA</option>
+              <option data-group="30" value="AA SMALL" data-cupsize="AA" data-backssize="Small">B</option>
+              <option data-group="32" value="AA MEDIUM" data-cupsize="AA" data-backssize="Medium">B</option>
+              <option data-group="34" value="A MEDIUM" data-cupsize="A" data-backssize="Medium">B</option>
+              <option data-group="36" value="B LARGE" data-cupsize="B" data-backssize="Large">B</option>
+              <option data-group="38" value="C LARGE" data-cupsize="C" data-backssize="Large">B</option>
+              <option data-group="40" value="D XLARGE" data-cupsize="D" data-backssize="XLarge">B</option>
+              <option data-group="42" value="DD XLARGE" data-cupsize="DD" data-backssize="XLarge">B</option>
+              <option data-group="44" value="DDD XLARGE" data-cupsize="DDD" data-backssize="XLarge">B</option>
+              <option data-group="28" value="AA XSMALL" data-cupsize="AA" data-backssize="XSmall">C</option>
+              <option data-group="30" value="AA SMALL" data-cupsize="AA" data-backssize="Small">C</option>
+              <option data-group="32" value="A MEDIUM" data-cupsize="A" data-backssize="Medium">C</option>
+              <option data-group="34" value="B MEDIUM" data-cupsize="B" data-backssize="Medium">C</option>
+              <option data-group="36" value="C LARGE" data-cupsize="C" data-backssize="Large">C</option>
+              <option data-group="38" value="D LARGE" data-cupsize="D" data-backssize="Large">C</option>
+              <option data-group="40" value="DD XLARGE" data-cupsize="DD" data-backssize="XLarge">C</option>
+              <option data-group="42" value="DDD XLARGE" data-cupsize="DDD" data-backssize="XLarge">C</option>
+              <option data-group="44" value="G XLARGE" data-cupsize="G" data-backssize="XLarge">C</option>
+              <option data-group="26" value="AA XSMALL" data-cupsize="AA" data-backssize="XSmall">D</option>
+              <option data-group="28" value="AA SMALL" data-cupsize="AA" data-backssize="Small">D</option>
+              <option data-group="30" value="A SMALL" data-cupsize="A" data-backssize="Small">D</option>
+              <option data-group="32" value="B SMALL" data-cupsize="B" data-backssize="Small">D</option>
+              <option data-group="34" value="C MEDIUM" data-cupsize="C" data-backssize="Medium">D</option>
+              <option data-group="36" value="D LARGE" data-cupsize="D" data-backssize="Large">D</option>
+              <option data-group="38" value="DD LARGE" data-cupsize="DD" data-backssize="Large">D</option>
+              <option data-group="40" value="DDD XLARGE" data-cupsize="DDD" data-backssize="XLarge">D</option>
+              <option data-group="42" value="G XLARGE" data-cupsize="G" data-backssize="XLarge">D</option>
+              <option data-group="44" value="H XLARGE" data-cupsize="H" data-backssize="XLarge">D</option>
+              <option data-group="24" value="AA XSMALL" data-cupsize="AA" data-backssize="XSmall">DD</option>
+              <option data-group="26" value="AA SMALL" data-cupsize="AA" data-backssize="Small">DD</option>
+              <option data-group="28" value="A SMALL" data-cupsize="A" data-backssize="Small">DD</option>
+              <option data-group="30" value="B SMALL" data-cupsize="B" data-backssize="Small">DD</option>
+              <option data-group="32" value="C SMALL" data-cupsize="C" data-backssize="Small">DD</option>
+              <option data-group="34" value="D MEDIUM" data-cupsize="D" data-backssize="Medium">DD</option>
+              <option data-group="36" value="DD LARGE" data-cupsize="DD" data-backssize="Large">DD</option>
+              <option data-group="38" value="DDD LARGE" data-cupsize="DDD" data-backssize="Large">DD</option>
+              <option data-group="40" value="G XLARGE" data-cupsize="G" data-backssize="XLarge">DD</option>
+              <option data-group="42" value="H XLARGE" data-cupsize="H" data-backssize="XLarge">DD</option>
+              <option data-group="24" value="AA XSMALL" data-cupsize="AA" data-backssize="XSmall">DDD</option>
+              <option data-group="26" value="A XSMALL" data-cupsize="A" data-backssize="XSmall">DDD</option>
+              <option data-group="28" value="B SMALL" data-cupsize="B" data-backssize="Small">DDD</option>
+              <option data-group="30" value="C SMALL" data-cupsize="C" data-backssize="Small">DDD</option>
+              <option data-group="32" value="D SMALL" data-cupsize="D" data-backssize="Small">DDD</option>
+              <option data-group="34" value="DD MEDIUM" data-cupsize="DD" data-backssize="Medium">DDD</option>
+              <option data-group="36" value="DDD LARGE" data-cupsize="DDD" data-backssize="Large">DDD</option>
+              <option data-group="38" value="G LARGE" data-cupsize="G" data-backssize="Large">DDD</option>
+              <option data-group="40" value="H XLARGE" data-cupsize="H" data-backssize="XLarge">DDD</option>
+              <option data-group="24" value="AA XSMALL" data-cupsize="AA" data-backssize="XSmall">E</option>
+              <option data-group="26" value="AA SMALL" data-cupsize="AA" data-backssize="Small">E</option>
+              <option data-group="28" value="A SMALL" data-cupsize="A" data-backssize="Small">E</option>
+              <option data-group="30" value="B SMALL" data-cupsize="B" data-backssize="Small">E</option>
+              <option data-group="32" value="C SMALL" data-cupsize="C" data-backssize="Small">E</option>
+              <option data-group="34" value="D MEDIUM" data-cupsize="D" data-backssize="Medium">E</option>
+              <option data-group="36" value="DD LARGE" data-cupsize="DD" data-backssize="Large">E</option>
+              <option data-group="38" value="DDD LARGE" data-cupsize="DDD" data-backssize="Large">E</option>
+              <option data-group="40" value="G XLARGE" data-cupsize="G" data-backssize="XLarge">E</option>
+              <option data-group="42" value="H XLARGE" data-cupsize="H" data-backssize="XLarge">E</option>
+              <option data-group="24" value="AA XSMALL" data-cupsize="AA" data-backssize="XSmall">F</option>
+              <option data-group="26" value="A XSMALL" data-cupsize="A" data-backssize="XSmall">F</option>
+              <option data-group="28" value="B SMALL" data-cupsize="B" data-backssize="Small">F</option>
+              <option data-group="30" value="C SMALL" data-cupsize="C" data-backssize="Small">F</option>
+              <option data-group="32" value="D SMALL" data-cupsize="D" data-backssize="Small">F</option>
+              <option data-group="34" value="DD MEDIUM" data-cupsize="DD" data-backssize="Medium">F</option>
+              <option data-group="36" value="DDD LARGE" data-cupsize="DDD" data-backssize="Large">F</option>
+              <option data-group="38" value="G LARGE" data-cupsize="G" data-backssize="Large">F</option>
+              <option data-group="40" value="H XLARGE" data-cupsize="H" data-backssize="XLarge">F</option>
+              <option data-group="24" value="A XSMALL" data-cupsize="A" data-backssize="XSmall">G</option>
+              <option data-group="26" value="B SMALL" data-cupsize="B" data-backssize="Small">G</option>
+              <option data-group="28" value="C SMALL" data-cupsize="C" data-backssize="Small">G</option>
+              <option data-group="30" value="D SMALL" data-cupsize="D" data-backssize="Small">G</option>
+              <option data-group="32" value="DD SMALL" data-cupsize="DD" data-backssize="Small">G</option>
+              <option data-group="34" value="DDD MEDIUM" data-cupsize="DDD" data-backssize="Medium">G</option>
+              <option data-group="36" value="G LARGE" data-cupsize="G" data-backssize="Large">G</option>
+              <option data-group="38" value="H LARGE" data-cupsize="H" data-backssize="Large">G</option>
+              <option data-group="40" value="H XLARGE" data-cupsize="H" data-backssize="XLarge">G</option>
+              <option data-group="24" value="B XSMALL" data-cupsize="B" data-backssize="XSmall">H</option>
+              <option data-group="26" value="C SMALL" data-cupsize="C" data-backssize="Small">H</option>
+              <option data-group="28" value="D SMALL" data-cupsize="D" data-backssize="Small">H</option>
+              <option data-group="30" value="DD SMALL" data-cupsize="DD" data-backssize="Small">H</option>
+              <option data-group="32" value="DDD SMALL" data-cupsize="DDD" data-backssize="Small">H</option>
+              <option data-group="34" value="G SMALL" data-cupsize="G" data-backssize="Small">H</option>
+              <option data-group="36" value="H LARGE" data-cupsize="H" data-backssize="Large">H</option>
+              <option data-group="38" value="H XLARGE" data-cupsize="H" data-backssize="XLarge">H</option>
+              <option data-group="24" value="C XSMALL" data-cupsize="C" data-backssize="XSmall">I</option>
+              <option data-group="26" value="D SMALL" data-cupsize="D" data-backssize="Small">I</option>
+              <option data-group="28" value="DD SMALL" data-cupsize="DD" data-backssize="Small">I</option>
+              <option data-group="30" value="DDD SMALL" data-cupsize="DDD" data-backssize="Small">I</option>
+              <option data-group="32" value="G SMALL" data-cupsize="G" data-backssize="Small">I</option>
+              <option data-group="34" value="H MEDIUM" data-cupsize="H" data-backssize="Medium">I</option>
+              <option data-group="36" value="H LARGE" data-cupsize="H" data-backssize="Large">I</option>
+              <option data-group="24" value="D XSMALL" data-cupsize="D" data-backssize="XSmall">J</option>
+              <option data-group="26" value="DD SMALL" data-cupsize="DD" data-backssize="Small">J</option>
+              <option data-group="28" value="DDD SMALL" data-cupsize="DDD" data-backssize="Small">J</option>
+              <option data-group="30" value="G SMALL" data-cupsize="G" data-backssize="Small">J</option>
+              <option data-group="32" value="H SMALL" data-cupsize="H" data-backssize="Small">J</option>
+            </select>
+          </p>
+        </div>
+      </div>
+      <input type="hidden" id="cup-size-value" value="">
+      <div class="content-center">
+          <div class="section-space"></div>
+          <a href="#" class="btn button next-section disable" id="setp-1">Next</a>
+      </div>
+      <div class="bottom">
+      	<p class="newsletter-text">Don't see your size? We're working on expanding our sizes<br> <a class="newsletter-link" href="#" id="newsletter-link" style="text-decoration:underline;"><span class="newsletter-span">Get on the list</span></a> to find out when we release new sizes and products.</p>
+      </div>
+     </div>
+    </section>
+    <section class="section question" id="section-2" style="display: none;">
+    <!-- Section 2 -->
+     <div class="container-set">
+      <div class="content-center">
+        <span class="second-title">Step 2</span>
+        <span class="section-title">Choose your cup style ...</span>
+        <p>This will be quick, we promise.</p>
+      </div>
+      <div class="fields-set">
+        {% assign variantcount = 1 %}
+        {% paginate collections['cups'].products by 1000 %}
+        {% for product in collections['cups'].products %}
+        <div class="one-third column cup-size-container{% for product_option in product.options_with_values %}{% if product_option.name == 'Color' %}{% for value in product_option.values %}{% assign selectcolor = value | remove: 'Manhattan ' | remove: 'Abu Dhabi '%}{% if selectcolor != 'Black' %} disabled{% endif %}{% endfor %}{% endif %}{% endfor %}" data-color="{% for product_option in product.options_with_values %}{% if product_option.name == 'Color' %}{% for value in product_option.values %}{{value | remove: 'Manhattan ' | remove: 'Abu Dhabi '}}{% endfor %}{% endif %}{% endfor %}">
+          <a href="#" class=""><img class="cup-size" src="{{product.featured_image | img_url: '700x700'}}" alt="{{product.title | escape}}"></a>
+          <div class="stock" style="display: none;">Out of Stock</div>
+          <div class="overlay">
+            <div class="text">
+              <span class="product-title">{{product.title}}</span>
+              <span class="product-price">{{product.price | money}}</span>
+              <select name="disabled" class="variant-cup-size" id="variant-{% increment variantcount %}" style="display:none;">{% for variant in product.variants %}
+                <option{% if variant == product.selected_or_first_available_variant %} selected="selected"{% endif %} data-stock="{% if variant.available %}true{% else %}false{% endif %}" value="{{variant.id}}" data-cupsize="{{variant.title | split: ' / ' | first}}">{{variant.title}}{% if variant.available %}{% else %} - {{ 'products.product.sold_out' | t }}{% endif %}</option>{% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endpaginate %}
+      </div>
+      <div class="content-center">
+        <div class="section-space-30"></div>
+        <p class="section-title">... and color.</p>
+      </div>
+      <div class="fields-set second-row center">
+        <div class="color-content flex" id="selectcolor">
+          <a href="#" class="color-selector black" data-color="Black"></a>
+      	  <a href="#" class="color-selector skin" data-color="Beige"></a>
+        </div>
+      </div>
+      <div class="content-center">
+        <a href="#" class="btn button next-section" id="setp-2">Next</a>
+      </div>
+       <div class="space"></div>
+     </div>
+     <div class="container-set" style="display:none;">
+       <div class="one-full column notfound-container">
+          <div class="section-space"></div>
+          <p class="main-title">
+            <span class="pink">0</span>
+            <span class="red">h</span>
+            <span class="blue">&nbsp;</span>
+            <span class="blue">n</span>
+            <span class="pink">0</span>
+            <span class="green">!</span>
+          </p>
+          <p class="bold top">we are working on expending our sizing. feel free to let us know,<br>what size you are looking for, send us an email at<br><a href="mailto:shop@thebralab.com" class="red">shop@thebralab.com</a></p>
+          <div class="content-center">
+            <div class="section-space"></div>
+            <div class="checkout-feilds">
+              <p class="newsletter-text">
+                <a class="newsletter-link" href="#" id="newsletter-link" style="text-decoration:underline;"><span class="newsletter-span">Get on the list</span></a> to find out when we release new sizes and products.</p>
+                <a href="/pages/get-started" class="btn button">Get on the list</a>
+            </div>
+          </div>
+       </div>
+      </div>
+    </section>
+    <section class="section question" id="section-3" style="display: none;">
+    <!-- Section 3 -->
+     <div class="container-set">
+      <div class="content-center">
+        <span class="second-title">Step 3</span>
+        <span class="section-title">Choose your band(s)</span>
+        <p class="bold">They are interchangable, so you get multiple looks for less!</p>
+      </div>
+      <div class="fields-set">
+        {% paginate collections['backs'].products by 1000 %}
+        {% for product in collections['backs'].products %}
+        <div class="one-third column backs-size-container{%comment%}{% for product_option in product.options_with_values %}{% if product_option.name == 'Color' %}{% for value in product_option.values %}{% if value != 'Black' %} disabled{% endif %}{% endfor %}{% endif %}{% endfor %}{%endcomment%}" data-color="{% for product_option in product.options_with_values %}{% if product_option.name == 'Color' %}{% for value in product_option.values %}{{value}}{% endfor %}{% endif %}{% endfor %}">
+          <a href="#" class=""><img class="cup-size" src="{{product.featured_image | img_url: '700x700'}}" alt="{{product.title | escape}}"></a>
+          <div class="stock" style="display: none;">Out of Stock</div>
+          <div class="overlay">
+            <div class="text">
+              <span class="product-title">{{product.title}}</span>
+              <span class="product-price">{{product.price | money}}</span>
+              <select name="disabled" class="variant-backs-size" id="variant-{% increment variantcount %}" style="display:none;">{% for variant in product.variants %}
+                <option{% if variant == product.selected_or_first_available_variant %} selected="selected"{% endif %} data-stock="{% if variant.available %}true{% else %}false{% endif %}" value="{{variant.id}}" data-backssize="{{variant.title | split: ' / ' | first}}">{{ variant.title }}{% if variant.available %}{% else %} - {{ 'products.product.sold_out' | t }}{% endif %}</option>{% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endpaginate %}
+      </div>
+      
+      <a href="#" class="btn button next-section" id="setp-3">Next</a>
+      <div class="space"></div>
+     </div>
+    </section>
+    
+    <section class="section question" id="section-4" style="display: none;">
+    <!-- Section 4 -->
+     <div class="container-set">
+      <div class="content-center">
+        <span class="second-title">Step 4</span>
+        <span class="section-title">Add some fun straps.</span>
+        <p class="bold">one, two, pick a few.</p>
+      </div>
+      <div class="fields-set">
+        {% paginate collections['straps'].products by 1000 %}
+        {% for product in collections['straps'].products %}
+        <div class="one-third column straps-size-container{%comment%}{% for tag in product.tags %}{% if tag != 'Black' %} disabled{% endif %}{% endfor %}{%endcomment%}" data-color="{% for tag in product.tags %}{% if tag == 'Black' or tag == 'Beige' %}{{tag}}{% endif %}{% endfor %}">
+          <a href="#" class=""><img class="cup-size" src="{{product.featured_image | img_url: '700x700'}}" alt="{{product.title | escape}}"></a>
+          <div class="overlay">
+            <div class="text">
+              <span class="product-title">{{product.title}}</span>
+              <span class="product-price">{{product.price | money}}</span>
+              <select name="disabled" class="variant-straps-size" id="variant-{% increment variantcount %}"{% if product.options.size < 2 %} style="display:none;"{% endif %}>{% for variant in product.variants %}
+                <option{% if variant == product.selected_or_first_available_variant %} selected="selected"{% endif %} data-stock="{% if variant.available %}true{% else %}false{% endif %}" value="{{ variant.id }}">{{ variant.title }}{% if variant.available %}{% else %} - {{ 'products.product.sold_out' | t }}{% endif %}</option>{% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endpaginate %}
+      </div>
+     
+      <p></p>
+      <a href="#" class="btn button" id="setp-addtocart">Add to cart</a>
+      <div class="fields-set">
+        <div class="sixteen columns alpha">
+          <p class="content-space inline-block"></p>
+        </div>
+      </div>
+     </div>
+    </section>
+    
+    <section class="section question" id="section-5" style="display: none;">
+     <div class="container-set">
+      <div class="mbottom space"></div>
+      
+      <div class="middle-content">
+      <p class="main-title">
+          <span class="pink">h</span>
+          <span class="blue">0</span>
+          <span class="green">0</span>
+          <span class="red">r</span>
+          <span class="pink">a</span>
+          <span class="blue">y</span>
+          <span class="green">!</span>
+      </p>
+      <p class="bold top">Your new favorite bra is ready to meet you.</p>
+      <div class="content-center">
+        <div class="progress"></div>
+        <div class="section-space"></div>
+        <div class="checkout-feilds">
+          <a href="/collections/all" class="btn button next-section cont">Keep Shopping</a>
+        </div>
+        <div class="checkout-feilds">
+          <a href="/checkout" id="checkoutbutton" class="btn button disabled">Checkout</a>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    </div>
+  </form>
+</div>
+<link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,600,800&display=swap" rel="stylesheet">
+<style>
+html{padding-bottom: 0 !important;}.content {padding: 50px 0px 0px 0px !important;} @font-face {font-family: 'NarzissHeavy';src: url("{{'NarzissHeavy-Drops.eot' | asset_url | split: '?' | first}}");src: url("{{'NarzissHeavy-Drops.eot' | asset_url | split: '?' | first}}?#iefix") format('embedded-opentype'),url("{{'NarzissHeavy-Drops.woff2' | asset_url | split: '?' | first}}") format('woff2'),url("{{'NarzissHeavy-Drops.woff' | asset_url | split: '?' | first}}") format('woff'),url("{{'NarzissHeavy-Drops.ttf' | asset_url | split: '?' | first}}") format('truetype'),url("{{'NarzissHeavy-Drops.svg' | asset_url | split: '?' | first}}#NarzissHeavy-Drops") format('svg');font-weight: 900;font-style: normal;}.main-wizard-codehouse{font-family:'Montserrat',sans-serif;font-style:normal;font-weight:400}.header-logo{text-align:center;margin:0 auto;display:inline-block;width:100%;position:relative}.header-logo img{max-height:42px;margin-top:10px}span.red-color{color:red}.main-wizard-codehouse section{background:#fff2f2;text-align:center;margin:15px auto;display:inline-block;width:100%;min-height:80vh;padding:0 0 50px}.main-wizard-codehouse section .btn.cont{background:#fc94d2}.main-wizard-codehouse section .btn.cont:hover{background:#fc5137}.main-wizard-codehouse section .btn{text-align:center;margin:0 auto;display:block;width:240px;font-size:17px;letter-spacing:4px;border-radius:50px;background:#ff502d}.main-wizard-codehouse #section-5 .btn{width:250px}.main-wizard-codehouse section .btn:hover{background:#fc94d2}#section-get-started .icon-set{max-width:100px;max-height:75px}#section-get-started p.content-space{font-size:10px;margin:8px 0;font-weight:600;color:#000}.main-wizard-codehouse section .section-title{display: inline-block;margin-bottom: 8px;letter-spacing:.1em;line-height:61px;font-size:2.5rem;font-weight:200}p.bold{font-weight:600;color:#656262}.content-center{margin:0 auto;display:inline-block}.checkout-feilds{float:left;margin:0 8px}.newsletter-container input,.newsletter-container input:focus,.newsletter-container input:hover{outline:none;border:0;box-shadow:none;border-bottom:solid 2px #000}.main-wizard-codehouse section .second-title{text-transform:uppercase;font-weight:600;display:inline-block;width:100%;margin:10px 0;margin-top:47px}.newsletter-close{position:absolute;top:5px;right:0;font-size:15px}.content-section{text-align:center}p.inline-block{display:flex}label.size-label{width:65%}.bra-size-selector{width:30%;border-left:none;border-top:none;border-right:none;border-bottom:#fff 2px solid;color:#ffc0cb} select {background: transparent url({{'drop-arrow.png' | asset_url}}) no-repeat 90% 14px;background-size: 11px;}select:hover,select:focus{outline:0;border:0;box-shadow:none;padding:0 9px}.pink{color:#fd8ed2}.blue{color:#a3aff4}.green{color:#066951}.red{color:#fe4f1f}.flex{display:inline-flex!important}.cup-size{display:block;width:100%;height:auto}.cup-size-container:hover .overlay,.backs-size-container:hover .overlay,.straps-size-container:hover .overlay{opacity:1}.cup-size-container,.backs-size-container,.straps-size-container{position:relative;width:50%}.text{color:#fff;position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);text-align:center}.product-title,.product-price{text-transform:uppercase;display:block;font-size:12px;line-height:20px}a.color-selector.black{background:#231f20;width:50px;height:50px;border:solid #fff 8px;border-radius:50%;margin:0 10px}a.color-selector.skin{background:#d0b99d;width:50px;height:50px;border:solid #fff 8px;border-radius:50%;margin:0 10px}p.bottom{margin-bottom:42px}.section-space{margin-top:100px}.section-space-30{margin-top:30px}span.second-title{font-size:1.5em;color:#cf9fa4}.bra-size-selector{font-size:1.2em;color:#cf9fa4;margin:0}label.size-label{font-weight:600;letter-spacing:.1em;font-size:1.3em;color:#000;line-height:40px}.newsletter-text{color:#cf9fa4}.bottom{padding:97px 0}.space{display:inline-flex;max-width:890px;margin:23px 0 25px}.mbottom{padding:60px 0}p.top{margin-top:23px}.newsletter-link{color:#cf9fa4}.newsletter-span{color:#cf9fa4}#section-newsletter{position:absolute;width:100%;top:0;left:0;right:0;bottom:0;background-color:rgba(252,96,72,0.94)}#text{position:absolute;top:50%;left:50%;font-size:50px;color:#fff;transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%)}input.transparent-field{font-family: 'Montserrat',sans-serif;background:transparent;margin-bottom: 20px;padding-bottom: 10px;color: #000;border-top:none;border-right:none;border-left:none;border-bottom:solid 2px #000;font-size:1.2rem}input.white{text-align:center;display:block;width:214px;border-radius:50px;background:#fff;color:#f53f07}input.white:hover{background:#000;color:#fff}.overlay-section{font-size:1.2rem;text-align:left}input.transparent-field::placeholder{color:#fff}input.transparent-field::selection{background:#fff;border-top:none;border-right:none;border-left:none;border-bottom:solid 2px #000;font-size:1.2rem}input.transparent-field:focus{color:#fff}.newsletter-button{margin:initial!important;background:#fff!important;color:#f53f07;outline:0}a.color-selector.skin::selection{border:solid #fc94d2 8px}p.inline-block{display:flex;margin:0}.container-set{display:block;max-width:800px;margin:0 auto}a.disable{pointer-events:none;cursor:no-drop;background:#dad8d8!important}.stock{background:#f53f07;color:#fff;position:absolute;bottom:0;left:0;right:0;z-index:1}.selected-outline a img{outline:3px solid #fd95d3}.selected-border{box-shadow: 0px 0px 4px 2px #fd95d3}.cup-size-container.disabled .overlay,.straps-size-container.disabled .overlay,.backs-size-container.disabled .overlay{opacity:1;background:#fd95d3}.fields-set .column.disabled{display:none}@media (min-width: 741px){.fields-set{display:inline-block;width:100%;margin:60px 0 25px}.fields-set .one-third{width:30.83333%!important;margin-bottom:21px}.main-title{line-height:98px;font-family:'NarzissHeavy Drops';font-weight:400;font-style:normal;font-size:8rem;margin:0}.main-title span{margin:0 -15px}.bottomm{padding:0;margin-bottom:60px}.header-logo span.right-menu{position:absolute;right:0;margin:18px 20px;letter-spacing:3px;font-size:14px;text-transform:uppercase;margin-top:22px;color:#000}.second-row{margin:0 0 60px}.newsletter-container{position:absolute;top:50%;width:400px;left:50%;font-size:50px;color:#fff;transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%)}.overlay{position:absolute;top:0;bottom:0;left:0;right:0;height:100%;width:100%;opacity:0;transition:.5s ease;background-color:rgba(248,177,221,0.75)}}@media (max-width: 740px){label.size-label{margin-left: 8px;text-align: left}.fields-set{display:inline-block !important;max-width:100%;margin:60px 0 25px}.fields-set .columns{margin:15px 0}.main-title{line-height:98px;font-family:'NarzissHeavy Drops';font-weight:400;font-style:normal;font-size:5rem;margin:0}.main-title span{margin:0 -12px}.bottomm{padding:0;margin-bottom:60px}.header-logo span.right-menu{margin:18px 20px;letter-spacing:3px;font-size:14px;text-transform:uppercase;margin-top:22px;color:#000;text-align:center;display:inline-block}span.red-color{display:block}.second-row{margin:0 0 60px}.newsletter-container{position:absolute;top:50%;width:100%;left:50%;font-size:50px;color:#fff;transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%)}.cup-size-container a,.backs-size-container a,.straps-size-container a{display:inline-block;padding:5px 15px}.overlay{position:absolute;top:2.5px;bottom:0;left:15px;right:0;height:95%;width:90%;opacity:0;transition:.5s ease;background-color:rgba(248,177,221,0.75)}}.main-title.notfound span{margin: 0;}.notfound-container{display: inline-block;width: 100%}
+@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@-o-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}.progress{height:20px;margin-bottom:20px;overflow:hidden;background-color:#f5f5f5;border-radius:4px;-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);box-shadow:inset 0 1px 2px rgba(0,0,0,.1)}.progress-bar{float:left;width:0;height:100%;font-size:12px;line-height:20px;color:#fff;text-align:center;background-color:#337ab7;-webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,.15);box-shadow:inset 0 -1px 0 rgba(0,0,0,.15);-webkit-transition:width .6s ease;-o-transition:width .6s ease;transition:width .6s ease}.progress-bar-striped,.progress-striped .progress-bar{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-image:-o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);-webkit-background-size:40px 40px;background-size:20px 20px}.progress-bar.active,.progress.active .progress-bar{-webkit-animation:progress-bar-stripes 2s linear infinite;-o-animation:progress-bar-stripes 2s linear infinite;animation:progress-bar-stripes 2s linear infinite}.progress-bar-success{background-color:#fc94d2}.progress-striped .progress-bar-success{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-image:-o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)}.progress-bar-info{background-color:#5bc0de}.progress-striped .progress-bar-info{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-image:-o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)}.progress-bar-warning{background-color:#f0ad4e}.progress-striped .progress-bar-warning{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-image:-o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)}.progress-bar-danger{background-color:#d9534f}.progress-striped .progress-bar-danger{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-image:-o-linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)}
+</style>
+
+<script type="text/javascript">
+ $(document).ready(function() {
+   $(document).on('click', '.next-section', function(e) {
+     $('.section').removeClass('activate').hide();
+     if($(this).parents('.section').next('.section').length > 0) {
+       $(this).parents('.section').next('.section').addClass('activate').show();
+     } return false;
+   });
+   $(document).on('click', '#newsletter-link', function(e) {
+     $('#section-newsletter').show();
+   });
+   $(document).on('click', '.newsletter-close', function(e) {
+     $('#section-newsletter').hide();
+   });
+   $('#bra-size').on('change', function(){
+     var valcupsize = $(this).find(':selected').val();
+     var cupsize = $('#cup-size');
+     $('#setp-1').addClass('disable');
+     $('#cup-size').val('0');
+     $('option', cupsize).filter(function(){
+        if ($(this).attr('data-group') === valcupsize || $(this).attr('data-group') === 'Show') { if ($(this).parent('span').length) { $(this).unwrap(); } } else { if (!$(this).parent('span').length) { $(this).wrap( "<span>" ).parent().hide(); } }
+     });
+   });
+   $('#bra-size').trigger('change');
+   //$('body').on('change','#cup-size', function() {
+   $('#cup-size').on('change', function(){
+     $('#setp-1').removeClass('disable');
+     $('#cup-size-value').val($('#cup-size').val()).attr('value', $('#cup-size').val());
+     var valvariantcupsize = $(this).find(':selected').attr('data-cupsize');
+     var variantcupsize = $('.variant-cup-size');
+     $('option', variantcupsize).filter(function(){
+        if ($(this).attr('data-cupsize') === valvariantcupsize) { $(this).attr("disabled", false).attr('selected', true); } else { $(this).attr('selected', false).attr("disabled", true); }
+        $('.variant-cup-size').each(function(index1, element1) {
+          var addClass1 = true, options1 = element1.options;
+          for (i = 0; i < options1.length; i++) {
+            var selected1 = options1[i].disabled;
+            if(selected1 === false){ addClass1 = false; break; }
+          }
+          var stock1 = $(this).find(':selected').trigger('change').attr('data-stock');
+          if ((stock1 === 'false') || (addClass1)) {
+            $(this).parents('.cup-size-container').addClass('disabled outofstock').find('.stock').show();
+          }
+        });
+     });
+     
+     if($('.cup-size-container:not(.disabled.outofstock)').length==0){
+         $('.cup-size-container').first().parents('.container-set').hide().next('.container-set').show()
+     } else {
+        $('.cup-size-container:not(.outofstock)').addClass('disabled');
+        if($('.cup-size-container[data-color=Black]:not(.outofstock)').length == 0) {
+           $('.cup-size-container[data-color=Beige]:not(.outofstock)').removeClass('disabled');
+           $('.color-selector.skin').addClass('selected-border')
+        } else {
+           $('.cup-size-container[data-color=Black]:not(.outofstock)').removeClass('disabled');
+           $('.color-selector.black').addClass('selected-border');
+        }
+     }
+     
+     var valvariantbackssize = $(this).find(':selected').attr('data-backssize');
+     var variantbackssize = $('.variant-backs-size');
+     $('option', variantbackssize).filter(function(){
+        if ($(this).attr('data-backssize') === valvariantbackssize) { $(this).attr("disabled", false).attr('selected', true); } else { $(this).attr('selected', false).attr("disabled", true); }
+        $('.variant-backs-size').each(function(index2, element2) {
+          var addClass2 = true, options2 = element2.options;
+          for (k = 0; k < options2.length; k++) {
+            var selected2 = options2[k].disabled;
+            if(selected2 === false){ addClass2 = false; break; }
+          }
+          var stock2 = $(this).find(':selected').trigger('change').attr('data-stock');
+          if ((stock2 === 'false') || (addClass2)) {
+            $(this).parents('.backs-size-container').addClass('disabled outofstock').find('.stock').show();
+          }
+        });
+     });
+   });
+   $(document).on('click', '.cup-size-container:not(.disabled)', function(e) {
+     $('.cup-size-container:not(.disabled)').removeClass('selected-outline').find('select').attr('name', 'disabled');
+     $(this).addClass('selected-outline').find('select').attr('name', 'id');
+     return false;
+   });
+   $(document).on('click', '#selectcolor a', function(e) {
+     $('#selectcolor a').removeClass('selected-border');
+     $('.cup-size-container:not(.outofstock)').addClass('disabled').removeClass('selected-outline');
+     $('.cup-size-container:not(.outofstock)').find('select').attr('name', 'disabled');
+     var selectcolor = $(this).attr('data-color');
+     $('.cup-size-container[data-color='+selectcolor+']:not(.outofstock)').removeClass('disabled');
+     $(this).addClass('selected-border');
+     return false;
+   });
+   $(document).on('click', '.straps-size-container:not(.disabled)', function(e) {
+     var strapssizecon = $(this);
+     strapssizecon.toggleClass('selected-outline');
+     strapssizecon.find('select').attr('name', function(index, attr){ return attr == 'id' ? 'disabled' : 'id';});
+     return false;
+   });
+   $(document).on('click', '.backs-size-container:not(.disabled)', function(e) {
+     var backssizecon = $(this);
+     backssizecon.toggleClass('selected-outline');
+     backssizecon.find('select').attr('name', function(index, attr){ return attr == 'id' ? 'disabled' : 'id';});
+     return false;
+   });
+   var length = $("select[name=id]").length;
+   $(document).on('click', '#setp-addtocart', function(e) {
+    e.preventDefault();
+    var productlist = new Array();
+    $('.selected-outline select[name=id]').each(function (index, element) {
+       var id = $(this).find('option:selected').val();
+       productlist.push({ variant_id: id || 0 });
+       console.log(id)
+    });
+    function ajaxProduct(id){
+      if (productlist.length) {
+        var request = productlist.shift();
+        var tempId= request.variant_id;
+        var params = {
+          type: 'POST',
+          url: '/cart/add.js',
+          data: 'quantity=1&id='+tempId,
+          dataType: 'json',
+          timeout: 10000,
+          beforeSend: function(){
+            $('.progress').html('<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">Adding Product to Cart</div>');
+            $('.progress-bar').animate({width: "20%"}, 100);
+            $('#checkoutbutton').addClass('disabled');
+          },
+          success: function(data) {
+            setTimeout(function(){
+                $('.progress-bar').css({width: "50%"});
+                setTimeout(function(){
+                  $('.progress-bar').text('Products Added to Cart');//.slideUp();
+                  $('.progress-bar').animate({width: "100%"}, 100);
+                  $('#checkoutbutton').removeClass('disabled');
+                }, 3000);
+            }, 1000);
+            ajaxProduct(); console.log(tempId)
+          },
+          error: function() { ajaxProduct(); }
+        };
+        $.ajax(params);
+      }
+      else {
+        //document.location.href = '/cart';
+        $.getJSON("/cart.js", function(cart) {
+          refreshCart(cart);
+          window.setTimeout(function(){ $.fancybox.close(); $('.cart-button').click(); }, 500);
+        });
+      }
+    };
+    ajaxProduct();
+    
+    function refreshCart(cart) {
+      $cartBtn = $(".icon-cart");
+      if ($cartBtn && $cartBtn.length) {
+        var value = $cartBtn.text() || '0';
+        var cart_items_html = "";
+        var $cart = $("#cart ul");
+        $cartBtn.text(value.replace(/[0-9]+/,cart.item_count));
+        $cart.find('li:not(:first)').remove();
+        if (cart.item_count == 0) {
+          $cart.append('<li class="empty_cart">{{ 'layout.general.empty_cart' | t }}</li>');
+        } else {
+          $.each(cart.items, function(index, item) {
+          cart_items_html += '<li class="cart_item">' +
+            '<p class="mm-counter">' +
+              '<span class="ss-icon minus">&#x002D;</span>' +
+              '<input type="number" min="0" class="quantity" name="updates[]" id="updates_' + item.id + '" value="' + item.quantity +'" />' +
+              '<span class="ss-icon plus">&#x002B;</span>' +
+            '</p>' +
+            '<a href="' + item.url +'">';
+          if (item.image) {
+            cart_items_html += '<div class="cart_image">' +
+                '<img src="' + item.image.replace(/(\.[^.]*)$/, "_medium$1").replace('http:', '') + '" alt="' + htmlEncode(item.title) + '" />' +
+              '</div>';
+          }
+          cart_items_html += '<div class="item_title">' + item.title +'</div>' +
+              '<strong class="price">' + Shopify.formatMoney(item.price, $cart.data('money-format')) + '</strong>' +
+            '</a>' +
+          '</li>';
+          });
+          
+          cart_items_html += '<li class="mm-label">' +
+            '<p class="mm-counter">' + Shopify.formatMoney(cart.total_price, $cart.data('money-format')) + '</p>' +
+            '<a href="/cart">' +
+              '<strong>{{ 'layout.general.subtotal' | t }}</strong>' +
+            '</a>' +
+          '</li>' +
+          '<li class="mm-subtitle clearfix">';
+
+          {% if settings.display_special_instructions %} 
+            var cart_note = cart.note ? cart.note : '';
+            cart_items_html += '<textarea id="note" name="note" rows="2" placeholder={{ 'layout.general.cart_note' | t | json }} class="clearfix">'+cart_note+'</textarea>';
+          {% endif %}
+
+          {% if settings.display_tos_checkbox %}
+            cart_items_html += '<p class="tos"><input type="checkbox" class="tos_agree" id="sliding_agree" required /><label class="tos_label" for="sliding_agree"> ' +
+              {{ 'cart.general.agree_to_terms_html' | t | json }} +
+            '</label></p>';
+          {% endif %}
+
+          cart_items_html += '<input type="submit" class="action_button right" value={{ 'layout.general.checkout' | t | json }} />' +
+            '<a href="javascript:void(0)" class="action_button edit_cart right">{{ 'layout.general.continue_shopping' | t }}</a>' +
+          '</li>';
+          
+          $cart.append(cart_items_html);
+          $cart.find('li.cart_item:last').addClass('last_cart_item');
+          
+          {% if settings.show_multiple_currencies %}
+          if($('.currencies:visible option:selected').val()) {
+            Currency.convertAll($cart.data('shop-currency'), $('.currencies:visible option:selected').val()); 
+          }
+          {% endif %}
+        }
+      }
+    }
+    
+    $('.section').removeClass('activate').hide();
+    $(this).parents('.section').next('.section').addClass('activate').show();
+   });
+ });
+</script>
+{% schema %}
+  {
+    "name": "Section Get Started",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_klaviyo",
+        "label": "Enable Klaviyo",
+        "default": true
+      }      
+    ]
+  }
+{% endschema %}
