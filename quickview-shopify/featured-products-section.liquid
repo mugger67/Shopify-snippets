@@ -1,0 +1,451 @@
+<div class="top-prod-bar bg-topProducts"
+     style="">
+    {% if section.settings.title != blank %}
+    <h2 class="top-prod-bar__heading">{{ section.settings.title | escape }}</h2>
+  {% endif %}  
+  <div class="top-prod-bar__block-area top-prod-bar__slider">
+
+    
+    {%- assign collection = collections[section.settings.collection] -%}
+ {% assign published_diff = section.settings.in_seconds_new | plus: 0 %}
+    
+   {% for product in collection.products limit: 9 %}
+    
+    {% assign date_published = product.published_at | date:'%s' %}
+{% assign date_now = 'now' | date:'%s' %}
+{% assign date_difference = date_now | minus: date_published %}
+ 
+
+    
+ {%- assign onsale = false -%}
+ {% if product.compare_at_price > product.price %}
+           {%- assign onsale = true -%}
+    {%endif%}
+    
+    <div class="top-prod-bar__block">
+      <div class="top-product_card">
+      <a href="{{ product.url | within: collection }}" class="top-prod-bar__link">
+       
+        <div class="top-prod-bar__image">
+          <img src="{{ product | img_url: '400x400' }}" alt="{{ product.title }}">
+        </div>
+        <a class="top-prod-bar__icon quick-view-btn" data-handle="{{product.handle}}" href="javascript:void(0);">
+          <img src="{{ section.settings.icon | img_url: '50x50'}}" alt="{{ product.title }}">
+        </a>
+
+          {% if onsale == true %}           
+            <div class="prod-bar__icon_sale">
+             <span>ON SALE</span>
+             <img src="{{ section.settings.icon_sale | img_url: '96x'}}" alt="{{ product.title }}">
+            </div>
+          {%endif%}
+        
+            
+          {% if  product.available == false %}           
+            <div class="prod-bar__icon_sold_out">
+              <span>SOLD OUT</span>
+              <img src="{{ section.settings.icon_sold_out | img_url: '96x'}}" alt="{{ product.title }}">
+            </div>
+          {%endif%}  
+
+          {% if date_difference < published_diff %} 
+            <div class="prod-bar__icon_new">                
+              <span>NEW Arrival</span>
+              <img src="{{ section.settings.icon_new | img_url: '96x'}}" alt="{{ product.title }}">
+            </div>        
+          {% endif %}   
+
+        <div class="top-prod-bar__info">
+          <div class="top-prod-bar__name">
+              {{ product.title }}
+          </div>
+       
+          {% if onsale == true %}
+
+            {% if product.price_varies %}
+              {%- assign sale_price = product.price | money -%}            
+             <div class="top-prod-bar__price stroked top-prod-bar__line-through" data-money-convertible="1">              
+               {{product.compare_at_price | money }}               
+            </div>            
+
+             <div class="top-prod-bar__price sale"
+               style="color:{{ section.settings.top_font_color_sale }}" data-money-convertible="1">              
+               {{ sale_price }}               
+            </div>
+            {% endif %}
+
+          {% else %}         
+              {%- assign price = product.price | money -%}
+              <div class="top-prod-bar__price stroked" data-money-convertible="1">              
+               {{price}}               
+            </div>     
+          {% endif %}  
+
+        </div>
+      </a>
+    </div>
+    </div>
+    {% endfor %}    
+  </div>
+  <button id="see-all-prod-btn" class="see-all-prod-btn">
+      Sell All Products
+  </button>
+</div>
+  
+<style>
+  .top-product_card {
+      border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 1px 3px 0 0 rgba(0, 0, 0, 0.1);
+  }  
+.bg-topProducts{
+background-color:{{ section.settings.top_background_color }}; 
+     background: url({{ section.settings.back_image | img_url: '270x' }});
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+@media only screen and (max-width: 500px){
+  .bg-topProducts{background:none}
+}
+  .see-all-prod-btn {
+    border: 0;
+    background: transparent;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.07px;
+    color: #ed4642;
+    display: flex;
+    margin: auto;
+    padding: 30px;
+}
+
+.top-prod-bar {
+  padding: 3em 10% 0em;
+}
+
+.top-prod-bar__heading {
+    font-size: 36px;
+    font-weight: 900;
+    color: #222222;
+    margin-bottom: 1em;
+}
+
+.top-prod-bar__block-area {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.top-prod-bar__block {
+    width: 26vw;
+    padding: 1em;
+    position: relative;
+}
+
+.top-prod-bar__link {
+    text-decoration: none;
+}
+
+.top-prod-bar__image {
+    width: 100%;
+    line-height: 0;
+}
+.top-prod-bar__image:before {
+    content: "";
+    position: absolute;
+    width: 70px;
+    height: 78px;
+    border: solid 1px #fff;
+    border-width: 10px;
+    border-radius: 50px;
+    background: #fff;
+    clip: rect(37px 72px 80px 28px);
+    transform: rotate(90deg);
+    top: -16px;
+    right: -17px;
+    z-index: 1;
+}
+.top-prod-bar__line-through{
+  text-decoration: line-through;
+  text-decoration-color: #ed4542;
+}
+
+.top-prod-bar__image img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.top-prod-bar__icon {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 2;
+    background: transparent;
+    width: 19px;
+}
+
+.top-prod-bar__info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    width: 100%;
+    min-height: 70px;
+    padding: 10px;
+}
+
+.top-prod-bar__name {
+  grid-area: 1 / 1 / 3 / 2;
+    font-size: 18px;
+    letter-spacing: 0.07px;
+}
+
+.prod-bar__icon_sale{
+  position: relative;
+}
+.prod-bar__icon_sale >img{
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+}
+.prod-bar__icon_sale > span{
+  position: absolute;
+  bottom: 40px;
+  left: 32px;
+  font-size: 14px;
+  color: white;
+  z-index: 1;
+}
+.prod-bar__icon_sold_out{
+  position: relative;
+}
+.prod-bar__icon_sold_out>img{
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+}
+.prod-bar__icon_sold_out> span{
+  position: absolute;
+  bottom: 40px;
+  left: 26px;
+  font-size: 14px;
+  color: white;
+  z-index: 1;
+}
+
+
+
+.prod-bar__icon_new{
+  position: relative;
+}
+.prod-bar__icon_new>img{
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+}
+.prod-bar__icon_new> span{
+  position: absolute;
+  bottom: 40px;
+  left: 23px;
+  font-size: 14px;
+  color: #ed4642;
+  z-index: 1;
+}
+.top-prod-bar__info .top-prod-bar__price {
+  grid-area: 1 / 2 / 2 / 3;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.07px;
+    text-align: end;
+}
+.top-prod-bar__info .sale{
+  grid-area: 2 / 2 / 3 / 3;
+  text-align: end;
+}
+
+@media screen and (max-width: 750px) {
+  .top-prod-bar {
+    padding: 0em 0 0em 5%;
+}
+.top-prod-bar__heading {
+  font-size: 30px;
+  font-weight: 900;
+  color: #222222;
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+  .top-prod-bar__block {
+    min-width: 44vh;
+    padding: 1em;
+    position: relative;
+  }
+
+  .top-prod-bar__name{
+    font-size: 15px;
+  }
+  .top-prod-bar__price {
+    font-size: 15px;
+  }
+
+}
+
+</style>
+
+{% javascript %}
+
+////////////////////////////////////////////
+
+
+
+
+  if ($(window).width() < 750) {
+    $('.top-prod-bar__block-area').addClass('top-prod-bar__slider');
+  }
+  else {
+    $('.top-prod-bar__block-area').removeClass('top-prod-bar__slider');
+  
+  }
+$(window).resize(function() { 
+
+});
+
+////////////////////////////////////////////
+$('.top-prod-bar__slider').slick({
+  arrows: false,
+  dots: false,
+  infinite: false,
+  slidesToShow: 1.3,
+  slidesToScroll: 1.3,
+  responsive: [
+  {
+    breakpoint: 750,
+    settings: {
+     dots: false
+    }
+  }
+]
+});
+////////////////////////////////////////////
+
+  var items =  document.querySelectorAll('.top-prod-bar__block').length;
+  var shown =  3;
+  if ($(window).width() < 750) {
+    $('.top-prod-bar__block').show();
+    //$('#see-all-prod-btn').hide();
+  }
+  else {
+    $('.top-prod-bar__block').hide();
+    $('.top-prod-bar__block:lt(3)').show();  
+  }
+    $('#see-all-prod-btn').click(function () {
+
+      shown = $('.top-prod-bar__block:visible').size()+3;
+      if(shown< items) {$('.top-prod-bar__block:lt('+shown+')').show();}
+      else {$('.top-prod-bar__block:lt('+items+')').show();
+           $('#see-all-prod-btn').hide();
+           }
+  });
+
+{% endjavascript %}
+  
+  {% schema %}
+  { 
+    "name":"Top Products collection",
+    "class":"index-section index-section--flush",
+    "settings":[ 
+       { 
+          "type":"text",
+          "id":"title",
+          "label":{  
+            "da":"Overskrift",
+            "de":"Überschrift",
+            "en":"Heading",
+            "es":"Título",
+            "fi":"Otsake",
+            "fr":"Titre",
+            "hi":"शीर्षक",
+            "it":"Heading",
+            "ja":"見出し",
+            "ko":"제목",
+            "ms":"Tajuk",
+            "nb":"Overskrift",
+            "nl":"Kop",
+            "pt-BR":"Título",
+            "pt-PT":"Título",
+            "sv":"Rubrik",
+            "th":"ส่วนหัว",
+            "zh-CN":"标题",
+            "zh-TW":"標題"
+         },
+          "default":"Top Products"
+       },
+       { 
+          "id":"collection",
+          "type":"collection",
+          "label":"Collection"
+       },
+       { 
+          "type":"image_picker",
+          "id":"back_image",
+          "label":"Background image"
+       },
+       { 
+          "type":"image_picker",
+          "id":"icon",
+          "label":"Icon"
+       },
+                      
+         { 
+          "type":"image_picker",
+          "id":"icon_new",
+          "label":"Icon for new"
+       },
+                      
+       { 
+          "type":"image_picker",
+          "id":"icon_sale",
+          "label":"Icon for sale"
+       },
+         { 
+          "type":"image_picker",
+          "id":"icon_sold_out",
+          "label":"Icon for sold out"
+       },
+                      
+         { 
+          "type":"text",
+          "id":"in_seconds_new",
+          "label":{  
+            
+            "en":"New product date difference in seconds"
+            
+         },
+           "default":"84600"
+       },              
+       { 
+          "type":"color",
+          "id":"top_background_color",
+          "label":"Background color",
+          "default":"#ccc"
+       },
+       { 
+        "type":"color",
+        "id":"top_font_color_sale",
+        "label":"Font color sale",
+        "default":"#ed4542"
+     }
+    ],
+    "presets":[ 
+       { 
+          "name":{ 
+             "en":"Top Products"
+          }
+       }
+    ]
+ }
+    
+  {% endschema %}

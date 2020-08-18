@@ -1,0 +1,205 @@
+<div class="collection-template" data-section-id="{{ section.id }}" data-section-type="collection-section">
+{% assign number = section.settings.products_per_page %}
+{% paginate collection.products by 50 %}
+  <div id="collection-page">
+    {% assign product = all_products[section.settings.product] %}
+    <form action="/cart/add" method="post" data-money-format="{{ shop.money_format }}">
+      <div class="collection-description desktop-12 tablet-6 mobile-3">
+        <h1>{{ collection.title }}</h1>
+        <div class="rte">{{ collection.description | remove: "[banner]" }}</div>
+      </div>
+      <div class="clear"></div>
+      {% unless section.settings.sidebar %}
+      <div id="full-width-filter" class="desktop-12 tablet-6 mobile-3">
+        {% for block in section.blocks %}
+        {% include 'filter' %}
+        {% endfor %}
+      </div>
+      {% endunless %}
+      <div class="clear"></div>
+      <div class="product-loop{% if section.settings.sidebar %} desktop-10 tablet-5 mobile-3{% endif %}">
+        {% for product in collection.products %}{% if product.handle != 'the-sox-drawer' %}
+        {% assign products-per-row = section.settings.products-per-row %}
+        <div class="product-index {% if products-per-row == 4 %}desktop-3{% cycle ' first', '', '', ' last' %}{% elsif products-per-row == 3 %}medium_grid desktop-4{% cycle ' first', '', ' last' %}{% elsif products-per-row == 2 %}large_grid desktop-6{% cycle ' first', ' last' %}{% endif %} tablet-half mobile-half" data-alpha="{{ product.title }}" data-price="{{ product.price }}">
+          {% include 'the-sox-drawer-listing' %}
+        </div>
+        {% endif %}{% endfor %}
+      </div>
+      
+      {% if section.settings.sidebar %}
+      <div class="desktop-2 tablet-1 mobile-3">
+        <div id="collection-sidebar">
+          <span id="totalqty">Total Qty = 0</span>
+          <div class="select">
+            <select id="product-select-{{ product.id }}" name="id">
+              {% for variant in product.variants %}
+              <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} - <span class="Bold-theme-hook-DO-NOT-DELETE bold_product_price" data-override-value-set="1" data-override-value="{{ variant.price }}" style="display:none !important;"></span>{{ variant.price | money }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="product-add clearfix">
+            {%comment%}
+            <h5>{{ 'products.product.quantity' | t }}</h5> 
+            <a class="downer" field="quantity"><i class="fa fa-minus"></i></a>
+            <input min="1" type="text" name="quantity" class="quantity" value="1" />
+            <a class="up" field="quantity"><i class="fa fa-plus"></i></a>{%endcomment%}
+            
+            <button type="submit" name="add" class="add clearfix">{{ 'products.product.add_to_cart' | t }}</button>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </form>
+  </div>
+  <div class="clear"></div>
+  {% include 'pagination' %}
+  {% endpaginate %}
+</div>
+<style>
+  button.add{
+	opacity: 0.5;
+	pointer-events: none;
+  }
+  .showButton{
+  	opacity: 1 !important;
+	pointer-events: inherit !important;
+  }
+</style>
+<script>
+
+function cumputeTotal() {
+    var totalqty = 0;
+    $('.perquantity').each(function(){
+      var closestpro = $(this).closest('.product-add').find('input.perproperty');
+      closestpro.val($(this).val()).prop('disabled', false);
+      if ($(this).val() > 0) { closestpro.prop('disabled', false); } else { closestpro.prop('disabled', true); }
+      totalqty += +$(this).val();
+    });
+    //if (totalqty === 0) { $('#productSelect--product-template-custom-option-0').val('Single Phone Case').trigger('change'); } else if (totalqty === 1) { $('#productSelect--product-template-custom-option-0').val('Single Phone Case').trigger('change'); } else if (totalqty === 2) { $('#productSelect--product-template-custom-option-0').val('2 Phone Cases').trigger('change'); } else if (totalqty === 3) { $('#productSelect--product-template-custom-option-0').val('3 Phone Cases').trigger('change'); } else if (totalqty === 4) { $('#productSelect--product-template-custom-option-0').val('4 or more Phone Case').trigger('change'); } else { $('#productSelect--product-template-custom-option-0').val('4 or more Phone Case').trigger('change'); }
+    $('#totalqty').html('Total Qty = ' + totalqty);
+    //$('[name="quantity"]').val(totalqty);
+  return totalqty;
+}
+$('.qtybtn.up').click(function () {
+  var total_item = cumputeTotal();
+    if ($(this).prev().val() < 15 && total_item < 15) {
+      $(this).prev().val(+$(this).prev().val() + 1).attr("value",$(this).prev().val());
+    }
+  total_item = cumputeTotal();
+  if(total_item == 15){
+    	$('.up').css("background-color","#ccc");
+    	$('button.add').addClass("showButton");
+  }
+  jQuery(this).parent().find(".downer").css("background-color","");
+});
+$('.qtybtn.downer').click(function () {
+    if ($(this).next().val() > 0 ) {$('.up').css("background-color","");$('button.add').removeClass("showButton");
+      if ($(this).next().val() > 0) $(this).next().val(+$(this).next().val() - 1).attr("value",$(this).next().val());
+    }
+  	if($(this).next().val() == 0){
+    	jQuery(this).css("background-color","#ccc");
+    }
+  cumputeTotal();
+});
+</script>
+
+{% schema %}
+  {
+    "name": "Collection",
+	"max_blocks":4,
+    "settings": [
+      {
+        "type": "range",
+        "id": "products_per_page",
+        "min": 2,
+        "max": 48,
+        "step": 1,
+        "label": "Products per page",
+        "default": 24
+      },
+      {
+        "type": "range",
+        "id": "products-per-row",
+        "min": 2,
+        "max": 4,
+        "step": 1,
+        "label": "Products per row",
+        "default": 3
+      },
+      {
+        "type": "checkbox",
+        "id": "sidebar",
+        "label": "Show sidebar"
+      },
+      {
+        "type": "product",
+        "id": "product",
+        "label": "Main Product"
+      }
+	],
+   "blocks":[
+      {
+         "type":"menu",
+         "name":"Menu",
+         "settings":[
+            {
+               "type": "link_list",
+               "id": "side_nav",
+               "label": "Sidebar menu",
+               "info":"This menu has limited support for dropdown items"
+            },
+           {
+            "type": "text",
+            "id": "title",
+            "label": "Menu title",
+            "default": "Explore"
+           }
+         ]
+      },
+      {
+         "type":"vendor_list",
+         "name":"Vendor list",
+		 "limit": 1,
+         "settings":[
+          {
+          "type": "text",
+          "id": "shop_by_designer_title",
+          "label": "Vendor list title",
+          "default": "Shop by Designer"
+          }
+         ]
+      },
+      {
+         "type":"sort_by",
+         "name":"Sort by",
+		 "limit": 1,
+         "settings":[
+          {
+          "type": "text",
+          "id": "sort_by_title",
+          "label": "Sort by title",
+          "default": "Sort"
+          }
+         ]
+      },
+      {
+         "type":"filter",
+         "name":"Filter",
+		 "limit": 3,
+         "settings":[
+          {
+          "type": "text",
+          "id": "filter_by_title",
+          "label": "Filter by title",
+          "default": "Filter by"
+          },
+          {
+          "type": "textarea",
+          "id": "filter_by",
+          "label": "Tag filter"
+          }
+         ]
+      }
+   ]
+  }
+{% endschema %}

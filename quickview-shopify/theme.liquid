@@ -1,0 +1,10 @@
+<html>
+<head>
+</head>
+<body>
+<script>
+    {% capture content %}{% include 'quickview' %}{% endcapture %}
+    var quickview_tpl = {{ content | json }};
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<div class="product-index-inner">
+  {% if product.available %}
+  {% for col in product.collections %}
+  {% if col.handle == 'new' %}
+  <div class="new icn">{{ 'products.general.new' | t }}</div>
+  {% endif %}
+  {% endfor %}
+
+  {% if product.price < product.compare_at_price %}
+  <div class="sale-item icn">{{ 'products.general.sale' | t }}</div>
+  {% endif %}
+
+  {% else %}
+  <div class="so icn">{{ 'products.general.sold' | t }}</div>
+  {% endif %}    
+  <div class="prod-image">
+    <a href="#" title="{{ product.title | escape }}">
+      <div class="reveal">
+        <img src="{{ product.featured_image.src | product_img_url: '650x' }}" alt="{{ product.featured_image.alt | escape }}" />
+        {% if product.images.size > 1 and settings.image-flip %}
+        <div class="hidden">
+          <img src="{{ product.images[1] | product_img_url: '650x' }}" alt="{{ product.images[1].alt | escape }}" />
+        </div>
+        {% endif %}
+      </div>
+    </a>
+  </div>
+  {% if settings.quickview %}
+  <a class="fancybox.ajax product-modal button" href="{{ product.url }}?view=quick">{{ 'products.general.quick_view' | t }}</a>  
+  {% endif %}
+</div>  
+
+<div class="product-info"> 
+  <div class="product-info-inner">
+    {% if settings.vendor %}
+    <span class="product-vendor">{{ product.vendor }}</span>
+    {% endif %}
+    <a href="{{ product.url | within: collection }}"> 
+      <span class="product-title">{{ product.title }}</span>
+    </a>
+    <div class="price">{%comment%}
+      {% if product.price < product.compare_at_price %}
+      <div class="onsale"><span class="Bold-theme-hook-DO-NOT-DELETE bold_product_price" data-override-value-set="1" data-override-value="{{ product.price }}" style="display:none !important;"></span>{{ product.price | money }}</div>
+      <div class="was"><span class="Bold-theme-hook-DO-NOT-DELETE bold_product_compare_price" data-override-value-set="1" data-override-value="{{ product.compare_at_price }}" style="display:none !important;"></span>{{ product.compare_at_price | money }}</div>
+      {% else %}
+      <div class="prod-price">{% if product.price_varies %} {{ 'products.general.from' | t }} <span class="Bold-theme-hook-DO-NOT-DELETE bold_product_price_2" data-override-value-set="1" data-override-value="{{ product.price_min }}" style="display:none !important;"></span>{{ product.price_min | money }} - <span class="Bold-theme-hook-DO-NOT-DELETE bold_product_price_3" data-override-value-set="1" data-override-value="{{ product.price_max }}" style="display:none !important;"></span>{{ product.price_max | money }} {% else %}<span class="Bold-theme-hook-DO-NOT-DELETE bold_product_price_4" data-override-value-set="1" data-override-value="{{ product.price }}" style="display:none !important;"></span>{{ product.price | money }}{% endif %}</div>
+      {% endif %}{%endcomment%}
+      <div class="product-add clearfix">
+        <input type="hidden" name="properties[{{ product.title }}]" class="perproperty" value="" disabled/>
+        <a class="qtybtn downer" field="perquantity"><i class="fa fa-minus"></i></a>
+        <input min="0" type="text" name="perquantity" class="perquantity" value="0" />
+        <a class="qtybtn up" field="perquantity"><i class="fa fa-plus"></i></a>
+      </div>
+    </div>
+  </div>
+</div>

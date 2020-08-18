@@ -1,0 +1,26 @@
+<div id="qv-images-container"></div>
+<div id="qv-content-container">
+  	<a id="qv-close" href="javascript:void(0)">{% include 'icon-exit-popup' %}</a>
+	<h2 id="qv-product-title"></h2>
+    <div id="qv-product-price-container">
+      <s id="qv-product-original-price" data-money-convertible="1"></s>
+      <span id="qv-product-price" data-money-convertible="1"></span>
+    </div>
+    <small id="qv-product-discount"></small>
+    <p id="qv-product-description"></p>
+    <a id="qv-product-link" href="#">Learn more</a>
+    <form>
+      <div id="qv-form-swatches">
+      </div>
+      <div id="qv-form-selectors">
+        <div id="qv-form-quantity">
+        	<h6 class="option header">Quantity</h6>
+          	<input name="quantity" type="number" min="1" step="1" value="1">
+          	<button type="button" class="btn-up" onclick="this.parentNode.querySelector('input').stepUp()"></button>
+          	<button type="button" class="btn-down" onclick="this.parentNode.querySelector('input').stepDown()"></button>
+        </div>
+      </div>
+      <input id="qv-add-to-cart-btn" type="submit" value="Add to cart">
+      <div id="qv-cart-response"></div>
+    </form>    
+</div>
