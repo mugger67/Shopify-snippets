@@ -1,0 +1,12 @@
+To use in Shopify to add a shipping rates calculator to the cart page. Relies on a JSON API to fetch rates based on country, state/province and zip code.
+
+h2. Dependencies
+
+jQuery >= 1.7
+Underscore.js for template ("http://underscorejs.org/#template":http://underscorejs.org/#template)
+shopify_common.js
+countries.js
+
+h2. Installation
+
+"Add a shipping rates calculator to your cart page":http://docs.shopify.com/manual/configuration/store-customization/page-specific/cart-page/add-shipping-rates-calculator
