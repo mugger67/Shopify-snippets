@@ -1,0 +1,199 @@
+{%- if settings.bk_sales_pop -%}
+<div class="bk bk-sales_pop">
+  {% unless settings.bk_sales_pop_collection == blank %}
+    {% assign salespop_collection = collections[settings.bk_sales_pop_collection] %}
+  {% else %}
+    {% assign salespop_collection = collections.all %}
+  {% endunless %}
+  <div id="SalesPop" class="animated faster {% if settings.bk_sales_pop_mobile %}small--hide{% endif %}">
+    <div class="container-sales_pop">
+      <div class="item-wrapper-sales_pop">
+        {% for product in salespop_collection.products limit:100 %}
+          <div class="item-sales_pop" style="display:none;">
+            <div class="image-wrapper-sales_pop">
+              <a href="{{ product.url }}" class="image-link-sales_pop">
+                <img class="image-sales_pop" src="{{ product | img_url: '65x65', crop: 'center' }}"
+                  srcset="{{ product | img_url: '65x65', crop: 'center' }} 1x, {{ product | img_url: '65x65', crop: 'center', scale: 2 }} 2x">
+              </a>
+            </div>
+            <div class="text-wrapper-sales_pop">
+              <div class="name-wrapper-sales_pop">
+                <span class="name-sales_pop"></span>
+                <small class="city-wrapper-sales_pop">
+                  (<small class="city-sales_pop"></small>)
+                </small>
+              </div>
+              <div class="purchased-wrapper-sales_pop">
+                <small class="purchased-sales_pop">{{ settings.bk_sales_pop_purchase }}</small>
+                <a href="{{ product.url }}" class="link-sales_pop">{{ product.title }}</a>
+                <small>{{ settings.bk_sales_pop_emoji }}</small>
+              </div>
+              <div class="time-wrapper-sales_pop">
+                <small>{{ settings.bk_sales_pop_prefix }}</small>
+                <small class="time-sales_pop"></small>
+                <small>{{ settings.bk_sales_pop_suffix }}</small>
+                <small class="fas fa-{{ settings.bk_sales_pop_icony }}"></small>
+                <small>{{ settings.bk_sales_pop_verified }}</small>
+              </div>
+            </div>
+            <button class="btn btn-square-small btn-close-sales_pop">
+             <span class="fas fa-times"></span>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+    .item-sales_pop{
+        padding:10px;
+        border-radius: 5px;
+        position:fixed!important;
+        background:#fff;
+        bottom:5px;
+        left:10px;
+        top:auto!important;
+        right:auto!important;
+        width:320px;
+        z-index:11;
+    }  
+    .container-sales_pop{
+      display: flex;
+      align-items: center;
+    } 
+    .item-wrapper-sales_pop{
+          flex: 85% 0 0;
+    }
+    .item-sales_pop{
+      display: flex;
+          align-items: center;
+    }
+    .image-link-sales_pop{
+      margin-right: 12px;
+    }
+    .btn-close-sales_pop{
+      right:6px;
+      position:absolute;
+    }
+    .bk-sales_pop{
+      position:fixed;
+      z-index:1;
+      bottom:20px;
+      left:20px;
+    }
+</style>
+<script type="text/javascript">
+    function salespopup() {
+    var displayTime = {{settings.bk_sales_pop_display}}000;
+    var animTime = 1000;
+    var intervalTime = {{settings.bk_sales_pop_interval}}000;
+    var totalTime = intervalTime + displayTime + animTime;
+    var timeAgo = {{settings.bk_sales_pop_timeago}} * 60;
+    var animUp = "fadeInUp";
+    var animDown = "fadeOutDown";
+    var $salespop = $("#SalesPop");
+    var $salespopItemWrapper = $(".item-wrapper-sales_pop");
+    var $salespopClose = $(".btn-close-sales_pop");
+    var $salespopTime = $(".time-sales_pop");
+    var $salespopName = $(".name-sales_pop");
+    var $salespopCity = $(".city-sales_pop");
+    $.fn.shuffleChildren = function() {
+      $.each(this.get(), function(index, el) {
+        var $el = $(el);
+        var $find = $el.children();
+        $find.sort(function() {
+          return 0.5 - Math.random();
+        });
+        $el.empty();
+        $find.appendTo($el);
+      });
+    };
+
+    function randomName() {
+      var names = "{{ settings.bk_sales_pop_name | strip_newlines }}".split(",");
+      var randomItemName = names[Math.floor(Math.random() * names.length)];
+      $salespopName.text(randomItemName);
+    }
+
+    function randomCity() {
+      var cities = "{{ settings.bk_sales_pop_city | strip_newlines }}".split(",");
+      var randomItemCity = cities[Math.floor(Math.random() * cities.length)];
+      $salespopCity.text(randomItemCity);
+    }
+
+    function randomTime() {
+      var randomlytimeAgo = Math.floor(Math.random() * timeAgo);
+      var minute = " {{ settings.bk_sales_pop_minute}}";
+      var minutes = " {{ settings.bk_sales_pop_minutes}}";
+      var hour = " {{ settings.bk_sales_pop_hour}}";
+      var hours = " {{ settings.bk_sales_pop_hours}}";
+      var day = " {{ settings.bk_sales_pop_day}}";
+      var days = " {{ settings.bk_sales_pop_days}}";
+      if (randomlytimeAgo <= 1) {
+        var timeStamp = minute;
+        var randomlytimeAgo = 1;
+      } else if (randomlytimeAgo < 60) {
+        var timeStamp = minutes;
+      } else if (randomlytimeAgo < 120) {
+        randomlytimeAgo = Math.floor(randomlytimeAgo / 60);
+        var timeStamp = hour;
+      } else if (randomlytimeAgo < 1440) {
+        randomlytimeAgo = Math.floor(randomlytimeAgo / 60);
+        var timeStamp = hours;
+      } else if (randomlytimeAgo < 2880) {
+        randomlytimeAgo = Math.floor(randomlytimeAgo / 60 / 24);
+        var timeStamp = day;
+      } else {
+        randomlytimeAgo = Math.floor(randomlytimeAgo / 60 / 24);
+        var timeStamp = days;
+      }
+      $salespopTime.text(randomlytimeAgo + timeStamp);
+    }
+
+    function animPopUp() {
+      $(".item-wrapper-sales_pop  > .item-sales_pop:first").show();
+      $salespop.show().addClass(animUp);
+    }
+
+    function animPopDown() {
+      $salespop.removeClass(animUp).addClass(animDown);
+      setTimeout(function() {
+        $salespop.removeClass(animDown).hide();
+        $(".item-wrapper-sales_pop  > .item-sales_pop:first").appendTo(".item-wrapper-sales_pop").hide();
+      }, animTime);
+    }
+
+    function animPop() {
+      if (sessionStorage.popClosed) {} else {
+        randomName();
+        randomCity();
+        randomTime();
+        animPopUp();
+        setTimeout(function() {
+          animPopDown();
+        }, displayTime);
+      }
+    }
+
+    function closePop() {
+      sessionStorage.setItem("popClosed", "true");
+      animPopDown();
+    }
+    $salespopItemWrapper.shuffleChildren();
+    setTimeout(function() {
+      animPop();
+      var salespopInterval = setInterval(animPop, totalTime);
+    }, intervalTime);
+    $salespopClose.click(function() {
+      closePop();
+    });
+  }
+
+  {% comment %} $(document).on("shopify:section:load", function() {
+    sessionStorage.removeItem("popClosed");
+  }); {% endcomment %}
+
+  salespopup();
+</script>
+{%- endif -%}

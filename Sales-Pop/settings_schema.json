@@ -1,0 +1,151 @@
+{
+    "name": "Sales Pop",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Activation"
+      },
+      {
+        "type": "checkbox",
+        "id": "bk_sales_pop",
+        "label": "Activate",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Notification settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "bk_sales_pop_mobile",
+        "label": "Hide on mobile"
+      },
+      {
+        "type": "collection",
+        "id": "bk_sales_pop_collection",
+        "label": "Collection",
+        "info": "Leave empty for all products"
+      },
+      {
+        "type": "range",
+        "id": "bk_sales_pop_timeago",
+        "label": "Max time ago (hours)",
+        "min": 1,
+        "max": 96,
+        "step": 1,
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "bk_sales_pop_display",
+        "label": "Display time (seconds)",
+        "min": 3,
+        "max": 10,
+        "step": 1,
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "bk_sales_pop_interval",
+        "label": "Interval time (seconds)",
+        "min": 5,
+        "max": 20,
+        "step": 1,
+        "default": 6
+      },
+      {
+        "type": "header",
+        "content": "Text settings"
+      },
+      {
+        "type": "textarea",
+        "id": "bk_sales_pop_name",
+        "label": "Names",
+        "default": "Someone",
+        "info": "Comma-separated"
+      },
+      {
+        "type": "textarea",
+        "id": "bk_sales_pop_city",
+        "label": "Cities",
+        "info": "Comma-separated",
+        "default": "Montreal Canada"
+      },
+      {
+        "type": "text",
+        "id": "bk_sales_pop_purchase",
+        "label": "Purchased",
+        "default": "has purchased"
+      },
+      {
+        "type": "text",
+        "id": "bk_sales_pop_emoji",
+        "label": "Purchase emoji",
+        "default": "👏",
+        "info": "Copy & paste an [Emoji](https:\/\/www.emojicopy.com\/)"
+      },
+      {
+        "type": "text",
+        "id": "bk_sales_pop_prefix",
+        "label": "Time prefix"
+      },
+      {
+        "type": "text",
+        "id": "bk_sales_pop_suffix",
+        "label": "Time suffix",
+        "default": "ago"
+      },
+      {
+        "type": "text",
+        "id": "bk_sales_pop_icony",
+        "label": "Verified icon",
+        "default": "check-circle"
+      },
+      {
+        "type": "text",
+        "id": "bk_sales_pop_verified",
+        "label": "Verified text",
+        "default": "Verified"
+      },
+      {
+        "type": "header",
+        "content": "Translations"
+      },
+      {
+        "type": "text",
+        "id": "bk_sales_pop_minute",
+        "label": "Minute",
+        "default": "minute"
+      },
+      {
+        "type": "text",
+        "id": "bk_sales_pop_minutes",
+        "label": "Minutes",
+        "default": "minutes"
+      },
+      {
+        "type": "text",
+        "id": "dbtfy_sales_pop_hour",
+        "label": "Hour",
+        "default": "hour"
+      },
+      {
+        "type": "text",
+        "id": "bk_sales_pop_hours",
+        "label": "Hours",
+        "default": "hours"
+      },
+      {
+        "type": "text",
+        "id": "bk_sales_pop_day",
+        "label": "Day",
+        "default": "day"
+      },
+      {
+        "type": "text",
+        "id": "bk_sales_pop_days",
+        "label": "Days",
+        "default": "days"
+      }
+    ]
+  }
